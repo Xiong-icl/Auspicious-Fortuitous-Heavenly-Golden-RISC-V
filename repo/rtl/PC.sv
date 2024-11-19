@@ -1,9 +1,9 @@
 module PC #(
-    input clk,          // Clock signal
-    input rst,          // Reset signal 
-    input [31:0] ImmOp, // Immediate operand for branch branch_PC
-    input PCsrc,        // Choice between branch and incremented PC
-    output [31:0] PC    // Current PC value
+    input logic clk,          // Clock signal
+    input logic rst,          // Reset signal 
+    input logic [31:0] ImmOp, // Immediate operand for branch branch_PC
+    input logic PCsrc,        // Choice between branch and incremented PC
+    output logic [31:0] PC    // Current PC value
 );
 
 // Internal signals
@@ -23,4 +23,3 @@ always_ff @(posedge clk or posedge rst)
 
 
 endmodule
-
