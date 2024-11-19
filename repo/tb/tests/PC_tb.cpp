@@ -1,7 +1,3 @@
-/*
- *  Verifies the results of the mux, exits with a 0 on success.
- */
-
 #include "base_testbench.h"
 
 Vdut *top;
