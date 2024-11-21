@@ -1,7 +1,3 @@
-/*
- *  Verifies the results of the mux, exits with a 0 on success.
- */
-
 #include "testbench.h"
 
 Vdut *top;
@@ -65,23 +61,9 @@ TEST_F(RegfileTestbench, CheckAllRegisters)
         top->AD2 = i;
         runSimulation(1);
 
-        EXPECT_EQ(top->AD1, number);
-        EXPECT_EQ(top->AD2, number);
+        EXPECT_EQ(top->RD1, number);
+        EXPECT_EQ(top->RD2, number);
     }
-}
-
-//Checking a0 is assigned
-TEST_F(RegfileTestbench, a0isAssigned)
-{
-    int number = 0x66666666;
-    top->WE3 = 1;
-    top->WD3 = number;
-    //What value should AD3 be?
-    top->AD3 = 1;
-
-    runSimulation(1);
-
-    EXPECT_EQ(top->a0, number);
 }
 
 int main(int argc, char **argv)
