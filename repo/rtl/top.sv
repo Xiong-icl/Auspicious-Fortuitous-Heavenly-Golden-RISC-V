@@ -30,6 +30,17 @@ module top #(
     logic                   sel,
     logic [DATA_WIDTH-1:0]  out
 
+    //Control Unit logic
+    logic [6:0] opcode;
+    logic [2:0] funct3;
+    logic [6:0] funct7;
+
+    // Extract instruction fields
+    assign opcode = instr[6:0];
+    assign funct3 = instr[14:12];
+    assign funct7 = instr[31:25];
+
+
     // Register File instantiation (asynchronous read, synchronous write)
     reg_file new_regfile (
         .clk(clk),
@@ -62,6 +73,7 @@ module top #(
     //     .out(alu_op2)
     // );
 
+    //Program Counter instantiation
     program_counter new_pc (
         .clk(clk),
         .rst(rst),
@@ -70,4 +82,29 @@ module top #(
         .PC(PC)    // Current PC value
     );
 
+//Needs modification, not linked with ALU yet
+/*
+    // Instruction Memory instantiation
+    instrmem instruction_memory (
+        .pc(pc),
+        .instruction(instr)
+    );
+
+    // Control Unit instantiation
+    control control_unit (
+        .opcode(opcode),
+        .RegWrite(RegWrite),
+        .ALUctrl(ALUctrl),
+        .ALUsrc(ALUsrc),
+        .IMMsrc(IMMsrc),
+        .PCsrc(PCsrc)
+    );
+
+    // Sign Extend instantiation
+    signextend sign_extend (
+        .instruction(instr),
+        .IMMsrc(IMMsrc),
+        .ImmOp(ImmOp)
+    );
+*/
 endmodule
