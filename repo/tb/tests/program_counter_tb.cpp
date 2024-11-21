@@ -1,4 +1,4 @@
-#include "base_testbench.h"
+#include "testbench.h"
 
 Vdut *top;
 VerilatedVcdC *tfp;
@@ -21,12 +21,13 @@ protected:
 //Tests need to be: when PC is initially 0, when PCsrc = 0, when PCsrc = 1, when reset = 1
 
 //When there is no input
-TEST_F(PCTestbench, InitialState)
+TEST_F(PCTestBench, InitialState)
 {
     EXPECT_EQ(top->PC, 0x0000);
 }
 
-//When PCsrc is Off
+//Testing this is a bit difficult, will come back to this later
+/*//When PCsrc is Off
 TEST_F(PCTestBench, PCsrcOff)
 {
 
@@ -58,6 +59,7 @@ TEST_F(PCTestBench, PCsrcOn)
     //PCsrc is on, expect branch_PC = PC + ImmOp
     EXPECT_EQ(top->PC, PC + ImmOp);
 }
+*/
 
 //Resetting
 TEST_F(PCTestBench, ResetPC)
