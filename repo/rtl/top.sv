@@ -24,6 +24,12 @@ module top #(
     logic EQ;
     logic [31:0] imm;
 
+    //MUX logic
+    logic [DATA_WIDTH-1:0]  in0,
+    logic [DATA_WIDTH-1:0]  in1,
+    logic                   sel,
+    logic [DATA_WIDTH-1:0]  out
+
     // Register File instantiation (asynchronous read, synchronous write)
     reg_file new_regfile (
         .clk(clk),
@@ -36,6 +42,7 @@ module top #(
         .RD2(rd2_data)
     );
 
+    //This technically does the job of the mux, but we should not include this as an non-mux instruction
     assign alu_op2 = (alu_src) ? imm : rd2_data;
 
     // ALU instantiation
@@ -46,6 +53,14 @@ module top #(
         .EQ(EQ),
         .SUM(alu_out)
     );
+
+    //Use this instead
+    // mux mux_alu (
+    //     .in0(rd2_data),
+    //     .in1(ImmOp),
+    //     .sel(alu_src),
+    //     .out(alu_op2)
+    // );
 
     program_counter new_pc (
         .clk(clk),
