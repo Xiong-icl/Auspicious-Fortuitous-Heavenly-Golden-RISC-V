@@ -1,4 +1,5 @@
-module PC #(
+//Module name PC clashes with output logic PC
+module program_counter (
     input logic clk,          // Clock signal
     input logic rst,          // Reset signal 
     input logic [31:0] ImmOp, // Immediate operand for branch branch_PC

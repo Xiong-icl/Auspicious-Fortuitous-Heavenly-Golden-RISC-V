@@ -5,17 +5,24 @@ module top #(
     input   logic rst,
     output  logic [DATA_WIDTH-1:0] a0
 );
-    logic alu_src;
     logic [31:0] ImmOp; // Immediate operand for branch branch_PC
     logic PCsrc;        // Choice between branch and incremented PC
     logic [31:0] PC;    // Current PC value
-    assign a0 = 32'd5;
     
 
     // Define Register File Signals
     logic [4:0] rs1, rs2, rd;       // Register addresses
-    logic [31:0] rd1_data, rd2_data, wr_data; // Read and Write data for Register File
+    logic [31:0] rd1_data, rd2_data, wr_data, alu_out; // Read and Write data for Register File
     logic we;                       // Write enable
+
+    //ALU logic
+    logic alu_src;                  // ALU source selection
+    logic [31:0] alu_op2;           // ALU operand 2 (could be immediate or register value)
+    logic alu_ctrl;                 // ALU operation control (add, subtract, etc.)
+
+    //PC logic 
+    logic EQ;
+    logic [31:0] imm;
 
     // Register File instantiation (asynchronous read, synchronous write)
     reg_file new_regfile (
@@ -26,8 +33,7 @@ module top #(
         .AD3(rd),
         .WD3(wr_data),
         .RD1(rd1_data),
-        .RD2(rd2_data),
-        .a0(a0)
+        .RD2(rd2_data)
     );
 
     assign alu_op2 = (alu_src) ? imm : rd2_data;
@@ -41,13 +47,12 @@ module top #(
         .SUM(alu_out)
     );
 
-    PC new_pc (
+    program_counter new_pc (
         .clk(clk),
-        .rst (rst),
-        .ImmOp (ImmOp), // Immediate operand for branch branch_PC
-        .PCsrc (PCsrc),        // Choice between branch and incremented PC
-        .PC (PC)    // Current PC value
-
+        .rst(rst),
+        .ImmOp(ImmOp), // Immediate operand for branch branch_PC
+        .PCsrc(PCsrc),        // Choice between branch and incremented PC
+        .PC(PC)    // Current PC value
     );
 
 endmodule
