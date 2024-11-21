@@ -65,7 +65,6 @@ TEST_F(PCTestBench, PCsrcOn)
 TEST_F(PCTestBench, ResetPC)
 {
 
-    //Addition test to form 0xFFFFFFFF
     int add1 = 0x66666666;
 
     top->PCsrc = 1;
