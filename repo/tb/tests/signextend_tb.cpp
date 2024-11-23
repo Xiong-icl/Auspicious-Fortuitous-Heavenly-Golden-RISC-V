@@ -17,8 +17,8 @@ protected:
 //I-type Instructions
 TEST_F(SignExtendTestbench, PositiveITypeTestbenchImmSrcZero)
 {
-    int load_imm = 0x1212; //12 bit number that we expect to load 
-    int numbers = 20'b1; //20 bit number part of the rest of the instruction
+    int load_imm = 0x212; //12 bit number that we expect to load 
+    int numbers = 0xFFFFF; //20 bit number part of the rest of the instruction
 
     int instruction = (load_imm << 20) + numbers;
 
@@ -27,7 +27,7 @@ TEST_F(SignExtendTestbench, PositiveITypeTestbenchImmSrcZero)
 
     top->eval();
 
-    EXPECT_EQ(top->SUM, load_imm);
+    EXPECT_EQ(top->ImmOp, load_imm);
 }
 
 TEST_F(SignExtendTestbench, NegativeITypeTestbenchImmSrcZero)
@@ -45,7 +45,7 @@ TEST_F(SignExtendTestbench, NegativeITypeTestbenchImmSrcZero)
     int check = (load_imm & 0x800) ? (load_imm | 0xFFFFF000) : load_imm; 
     //If load_imm is negative (checking the highest bit), load_imm is sign extended by 1 (0xFFFFF000), else return load_imm
 
-    EXPECT_EQ(top->SUM, check);
+    EXPECT_EQ(top->ImmOp, check);
 }
 
 //Do we need this??
@@ -64,7 +64,7 @@ TEST_F(SignExtendTestbench, PositiveSTypeTestbenchImmSrcZero)
 
     top->eval();
 
-    EXPECT_EQ(top->SUM, (store_imm_7 << 5) + store_imm_5);
+    EXPECT_EQ(top->ImmOp, (store_imm_7 << 5) + store_imm_5);
 }
 */
 
