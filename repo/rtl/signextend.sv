@@ -47,6 +47,7 @@ module signextend (
         endcase
     end
 
+    //Why is this necessary?
     // Assertions for verification
     // synthesis translate_off
     always @(instr, IMMsrc) begin

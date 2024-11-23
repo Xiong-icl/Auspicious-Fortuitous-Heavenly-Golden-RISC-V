@@ -1,8 +1,5 @@
 #include "base_testbench.h"
 
-#define OPCODE_ADD 0b0000
-#define OPCODE_SUB 0b0001
-
 Vdut *top;
 VerilatedVcdC *tfp;
 unsigned int ticks = 0;
@@ -18,37 +15,58 @@ protected:
 };
 
 //I-type Instructions
-TEST_F(SignExtendTestbench, ITypeTestbench)
+TEST_F(SignExtendTestbench, PositiveITypeTestbenchImmSrcZero)
 {
+    int load_imm = 0x1212; //12 bit number that we expect to load 
+    int numbers = 20'b1; //20 bit number part of the rest of the instruction
 
-    int add1 = 0x66666666;
-    int add2 = 0x99999999;
+    int instruction = (load_imm << 20) + numbers;
 
-    top->ALUctrl = OPCODE_ADD;
-    top->ALUop1 = add1;
-    top->ALUop2 = add2;
+    top->instr = instruction;
+    top->IMMsrc = 0;
 
     top->eval();
 
-    EXPECT_EQ(top->SUM, add1 + add2);
-    EXPECT_EQ(top->EQ, add1 + add2 == 0);
+    EXPECT_EQ(top->SUM, load_imm);
 }
 
-TEST_F(SignExtendTestbench, EqualsTest)
+TEST_F(SignExtendTestbench, NegativeITypeTestbenchImmSrcZero)
 {
-    //Comparing 2 numbers by subtraction
-    int sub1 = 0x66666666;
-    int sub2 = 0x66666666;
+    int load_imm = 0xFFFE; //12 bit number that we expect to load
+    int numbers = 0xFFFFF; 
 
-    top->ALUctrl = OPCODE_SUB;
-    top->ALUop1 = sub1;
-    top->ALUop2 = sub2;
+    int instruction = (load_imm << 20) + numbers;
+
+    top->instr = instruction;
+    top->IMMsrc = 0;
 
     top->eval();
 
-    EXPECT_EQ(top->SUM, sub1 - sub2);
-    EXPECT_EQ(top->EQ, (sub1 - sub2) == 0);
+    int check = (load_imm & 0x800) ? (load_imm | 0xFFFFF000) : load_imm; 
+    //If load_imm is negative (checking the highest bit), load_imm is sign extended by 1 (0xFFFFF000), else return load_imm
+
+    EXPECT_EQ(top->SUM, check);
 }
+
+//Do we need this??
+/*
+TEST_F(SignExtendTestbench, PositiveSTypeTestbenchImmSrcZero)
+{
+    int store_imm_7 = 7'b0101010; //Imm[11:5]
+    int numbers = 13'b1; //rs2, rs1, funct
+    int store_imm_5 = 5'b10101
+    int opcode = 7'b1;
+
+    int instruction = (store_imm_7 << 25) + (numbers << 12) + (store_imm_5 << 7) + opcode;
+
+    top->instr = instruction;
+    top->IMMsrc = 1;
+
+    top->eval();
+
+    EXPECT_EQ(top->SUM, (store_imm_7 << 5) + store_imm_5);
+}
+*/
 
 int main(int argc, char **argv)
 {
