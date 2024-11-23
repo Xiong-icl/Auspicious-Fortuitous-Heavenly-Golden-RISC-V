@@ -25,12 +25,13 @@ module top #(
     logic [31:0] imm;
 
     //MUX logic
-    logic [DATA_WIDTH-1:0]  in0,
-    logic [DATA_WIDTH-1:0]  in1,
-    logic                   sel,
-    logic [DATA_WIDTH-1:0]  out
+    logic [DATA_WIDTH-1:0]  in0;
+    logic [DATA_WIDTH-1:0]  in1;
+    logic                   sel;
+    logic [DATA_WIDTH-1:0]  out;
 
     //Control Unit logic
+    logic [31:0] instr;
     logic [6:0] opcode;
     logic [2:0] funct3;
     logic [6:0] funct7;
@@ -50,7 +51,8 @@ module top #(
         .AD3(rd),
         .WD3(wr_data),
         .RD1(rd1_data),
-        .RD2(rd2_data)
+        .RD2(rd2_data),
+        .a0(a0)
     );
 
     //This technically does the job of the mux, but we should not include this as an non-mux instruction
