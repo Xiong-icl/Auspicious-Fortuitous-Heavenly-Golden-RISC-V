@@ -38,7 +38,6 @@ module control #(
                                 ALUctrl = 3'b000;
                                 RegWrite = 1;
                                 ALUsrc = 0;
-                                $display("add", op, " ", funct3);
 
                             end
 
@@ -46,7 +45,6 @@ module control #(
                             ALUctrl = 3'b001;
                             RegWrite = 1;
                             ALUsrc = 0;
-                            $display("sub", op, " ", funct3);
                             end
                         endcase
                     end
