@@ -1,63 +1,129 @@
-module control (
-    input  logic [6:0] opcode,    // Opcode from instruction
-    input  logic [2:0] funct3,    // funct3 field from instruction
-    input  logic [6:0] funct7,    // funct7 field from instruction
+module control #(
+    parameter INSTR_WIDTH = 32
+)(
+    input  logic [INSTR_WIDTH 6:0]   opcode,    // Opcode from instruction
+    input  logic [INSTR_WIDTH 14:12] funct3,    // funct3 field from instruction
+    input  logic [INSTR_WIDTH 31:24] funct7,    // funct7 field from instruction
     output logic       RegWrite,   // Register file write enable
     output logic       ALUSrc,    // ALU source selector
     output logic [2:0] ALUctrl,   // ALU operation control
-    output logic       IMMsrc,    // Immediate source selector
-    output logic       PCsrc      // PC source selector (for branches)
+    output logic [1:0] IMMsrc,    // Immediate source selector
+    output logic       PCsrc,      // PC source selector (for branches)
+    output logic       ResultSrc,
+    output logic       MemWrite
+
 );
+
+    // Default values
+    assign    RegWrite  = 1'b0;
+    assign    ALUSrc    = 1'b0;
+    assign    IMMsrc    = 2'b00;
+    assign    PCsrc     = 1'b0;
+    assign    ALUctrl   = 3'b000;
+    assign    ResultSrc = 1'b0;
+    assign    MemWrite  = 1'b0; 
 
     // Main control logic
     always_comb begin
-        // Default values
-        RegWrite = 1'b0;
-        ALUSrc   = 2'b00;
-        ALUctrl  = ALU_ADD;
-        IMMsrc   = 1'b0;
-        PCsrc    = 1'b0;
+        case (opcode)
+            
+            7'b011011: begin            //R_type
 
-        case(opcode)
-            R_TYPE: begin
-                RegWrite = 1'b1;
-                ALUSrc   = 2'b00;  // Use register operands
-                
-                // Decode ALU operation based on funct3 and funct7
                 case(funct3)
-                    3'b000: ALUctrl = (funct7[5]) ? ALU_SUB : ALU_ADD;
-                    3'b111: ALUctrl = ALU_AND;
-                    3'b110: ALUctrl = ALU_OR;
+
+                    3'b000: begin           //Add , sub instructions
+                        PCsrc = 0;
+                        case(funct7)
+                            7'b0000000: begin       //Add
+                                ALUctrl = 3'b000;
+                                RegWrite = 1;
+                                ALUsrc = 0;
+                                $display("add", op, " ", funct3);
+
+                            end
+
+                            7'b0100000: begin       //sub
+                            ALUctrl = 3'b001;
+                            RegWrite = 1;
+                            ALUsrc = 0;
+                            $display("sub", op, " ", funct3);
+                            end
+                        endcase
+                    end
+
+                    3'b001: begin           //sll instruction
+                        PCsrc = 0;
+                    end
+                    
+                    3'b010: begin           //slt instruction
+                        PCsrc = 0;
+                    end
+
+                    3'b011: begin           //sltu instruction
+                        PCsrc = 0;
+                    end
+                    
+                    3'b100: begin           //xor instruction
+                        PCsrc = 0;
+                    end
+                    
+                    3'b101: begin           //srl , sra instructions
+                        PCsrc = 0;
+                        case(funct7)
+                            7'b0000000: begin       //srl
+
+                            end
+
+                            7'b0100000: begin       //sra 
+
+                            end
+                        endcase
+                    end
+                    
+                    3'b110: begin           //or instruction
+                        PCsrc = 0;
+                    end
+                    
+                    3'b111: begin           //and instruction
+                        PCsrc = 0;
+                    end
                 endcase
             end
 
-            I_TYPE: begin
-                RegWrite = 1'b1;
-                ALUSrc   = 2'b01;  // Use immediate operand
-                
-                case(funct3)
-                    3'b000: ALUctrl = ALU_ADD;  // ADDI
-                    3'b111: ALUctrl = ALU_AND;  // ANDI
-                    3'b110: ALUctrl = ALU_OR;   // ORI
-                endcase
+            7'b0010011: begin            //I1_type
+
             end
 
-            B_TYPE: begin
-                RegWrite = 1'b0;
-                ALUSrc   = 2'b00;
-                ALUctrl  = ALU_SUB;  // For comparison
-                PCsrc    = 1'b1;     // Branch instruction
+            7'b0000011: begin            //I2_type
+
             end
 
-            default: begin
-                // Default values for undefined opcodes
-                RegWrite = 1'b0;
-                ALUSrc   = 2'b00;
-                ALUctrl  = ALU_ADD;
-                IMMsrc   = 1'b0;
-                PCsrc    = 1'b0;
+            7'b0100011: begin            //S_type
+
             end
+
+            7'b1100011: begin            //B_type
+
+            end
+
+            7'b1101111: begin            //J_type
+
+            end
+
+            7'b1100111: begin            //I3_type
+
+            end
+
+            7'b0110111: begin            //U1_type
+
+            end
+
+            7'b0010111: begin            //U2_type
+
+            end 
+
         endcase
     end
+
 
 endmodule
