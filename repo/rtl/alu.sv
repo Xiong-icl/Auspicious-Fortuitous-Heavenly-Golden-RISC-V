@@ -3,7 +3,7 @@ module alu #(
 )(
     input logic [DATA_WIDTH 31:0]ALUop1,  // input data 1
     input logic [DATA_WIDTH 31:0]ALUop2,  // input data 2
-    input logic [2:0]ALUctrl, //decides which instruction either addi or bne
+    input logic [2:0]ALUctrl, //decides which instruction 8 different options
     output logic [DATA_WIDTH 31:0]SUM, //outputs the sum
     output logic EQ //gives signals to control unit on diagram I think it is ZERO
 );
