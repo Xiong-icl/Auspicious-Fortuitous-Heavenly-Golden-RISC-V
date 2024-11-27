@@ -19,7 +19,7 @@ Tags are not necessary but useful for monitoring changes in main. Whenever a cha
 ## Git Rebasing
 I'll refer to this StackOverflow post on why you would use rebasing.
 
-```
+
 Rebase is most useful when pushing a single commit or a small number of commits developed in a short time frame (hours or minutes).
 
 Before pushing to a shared server, one must first pull the commits made to the origin's HEAD in the meantime—failing to do so would create a non-fast-forward push. In doing so, one can choose between a merge (git pull) or a rebase (git pull --rebase) operation. The merge option, while technically more appealing, creates an additional merge commit. For a small commit, the appearance of two commits per change actually makes the history less readable because the merge operation distracts from the commit's message.
@@ -28,4 +28,3 @@ In a typical shared development tree, every developer ends up pushing to a share
 
 All this applies to rebasing local commits, or rebasing a short-lived feature branch shared by closely connected coworkers (sitting in the same room). Once a commit is pushed to a branch regularly followed by by others, it should never be rebased.
 
-```

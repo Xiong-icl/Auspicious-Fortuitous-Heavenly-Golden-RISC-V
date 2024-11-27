@@ -1,125 +1,259 @@
-module control #(
-    parameter INSTR_WIDTH = 32
-)(
-    input  logic [INSTR_WIDTH 6:0]   opcode,    // Opcode from instruction
-    input  logic [INSTR_WIDTH 14:12] funct3,    // funct3 field from instruction
-    input  logic [INSTR_WIDTH 31:24] funct7,    // funct7 field from instruction
-    output logic       RegWrite,   // Register file write enable
-    output logic       ALUSrc,    // ALU source selector
-    output logic [2:0] ALUctrl,   // ALU operation control
-    output logic [1:0] IMMsrc,    // Immediate source selector
-    output logic       PCsrc,      // PC source selector (for branches)
-    output logic       ResultSrc,
-    output logic       MemWrite
+`include "define.sv"
 
+module control (
+    //Defining opcode, funct3 and funct7 like this makes it difficult to input full 32-bit instructions.
+    input   logic [31:0] instruction,
+    output  logic        RegWrite,  // Register file write enable
+    output  logic        ALUSrc,    // ALU source selector
+    output  logic [3:0]  ALUCtrl,   // ALU operation control
+    output  logic [2:0]  IMMSrc,    // Immediate source selector
+    output  logic [2:0]  MemCtrl,   // Memory operation control
+    output  logic [2:0]  PCSrc,     // PC source selector (for branches)
+    output  logic        MemWrite,  // Memory write enable
+    output  logic [1:0]  ResultSrc  // Result source selector
 );
 
-    // Default values
-    assign    RegWrite  = 1'b0;
-    assign    ALUSrc    = 1'b0;
-    assign    IMMsrc    = 2'b00;
-    assign    PCsrc     = 1'b0;
-    assign    ALUctrl   = 3'b000;
-    assign    ResultSrc = 1'b0;
-    assign    MemWrite  = 1'b0; 
+    logic [6:0] opcode;    // Opcode from instruction
+    logic [2:0] funct3;    // funct3 field from instruction
+    logic [6:0] funct7;    // funct7 field from instruction
+
+    //Assigning variables based on 32-bit instruction
+    assign opcode = instruction[6:0];
+    assign funct3 = instruction[14:12];
+    assign funct7 = instruction[31:25];
 
     // Main control logic
     always_comb begin
-        case (opcode)
-            
-            7'b011011: begin            //R_type
+        // Setting all default values
+        ALUCtrl = `ALU_OPCODE_ADD;
+        RegWrite = 0;
+        ALUSrc = 0;
+        ALUCtrl = 0;
+        IMMSrc = 0;
+        MemCtrl = 0;
+        PCSrc = `PC_NEXT;
+        MemWrite = 0;
+        ResultSrc = 0;
 
+        case(opcode)
+
+            //Register instructions
+            `R_TYPE: begin
+                RegWrite = 1;
+                ALUSrc   = 0;
+                MemWrite = 0;
+                ResultSrc = 0;
+                
+                // Decode ALU operation based on funct3 and funct7
                 case(funct3)
-
-                    3'b000: begin           //Add , sub instructions
-                        PCsrc = 0;
+                    3'b000: begin
                         case(funct7)
-                            7'b0000000: begin       //Add
-                                ALUctrl = 3'b000;
-                                RegWrite = 1;
-                                ALUsrc = 0;
-
+                            7'h00: begin 
+                                ALUCtrl = `ALU_OPCODE_ADD;
                             end
 
-                            7'b0100000: begin       //sub
-                            ALUctrl = 3'b001;
-                            RegWrite = 1;
-                            ALUsrc = 0;
+                            7'h20: begin
+                                ALUCtrl = `ALU_OPCODE_SUB;
                             end
+
+                            default: $display ("Add/Sub faulty");
                         endcase
                     end
 
-                    3'b001: begin           //sll instruction
-                        PCsrc = 0;
-                    end
-                    
-                    3'b010: begin           //slt instruction
-                        PCsrc = 0;
+                    3'b100: begin
+                        ALUCtrl = `ALU_OPCODE_XOR;
                     end
 
-                    3'b011: begin           //sltu instruction
-                        PCsrc = 0;
+                    3'b110: begin
+                        ALUCtrl = `ALU_OPCODE_OR;
+                    end
+
+                    3'b111: begin
+                        ALUCtrl = `ALU_OPCODE_AND;
+                    end
+
+                    3'b001: begin
+                        ALUCtrl = `ALU_OPCODE_LSL;
                     end
                     
-                    3'b100: begin           //xor instruction
-                        PCsrc = 0;
-                    end
-                    
-                    3'b101: begin           //srl , sra instructions
-                        PCsrc = 0;
+                    3'b101: begin
+
                         case(funct7)
-                            7'b0000000: begin       //srl
-
+                            7'h00: begin
+                                ALUCtrl = `ALU_OPCODE_LSR;
                             end
 
-                            7'b0100000: begin       //sra 
-
+                            7'h20: begin
+                                ALUCtrl = `ALU_OPCODE_ASR;
                             end
+
+                            default: $display ("LSR/ASR faulty");
                         endcase
                     end
-                    
-                    3'b110: begin           //or instruction
-                        PCsrc = 0;
+
+                    3'b010: begin
+                        ALUCtrl = `ALU_OPCODE_SLT;
                     end
-                    
-                    3'b111: begin           //and instruction
-                        PCsrc = 0;
+
+                    3'b011: begin
+                        ALUCtrl = `ALU_OPCODE_SLTU;
                     end
+
+                    default: $display("R_TYPE instructions do not work");
                 endcase
             end
 
-            7'b0010011: begin            //I1_type
+            //Immediate instructions
+            //Since immediate instructions are similar to register instructions to the ALU, use the same definitions
+            `I_TYPE: begin
+                RegWrite = 1;
+                ALUSrc   = 1;  
+                IMMSrc = `SIGN_EXTEND_I;
+                
+                case(funct3)
+                    3'b000: begin
+                        ALUCtrl = `ALU_OPCODE_ADD; // add instruction
+                    end
 
+                    3'b100: begin
+                        ALUCtrl = `ALU_OPCODE_XOR; // xor instruction
+                    end
+
+                    3'b110: begin
+                        ALUCtrl = `ALU_OPCODE_OR; // or instruction
+                    end
+
+                    3'b111: begin
+                        ALUCtrl = `ALU_OPCODE_AND; // and instruction
+                    end
+
+                    3'b001: begin 
+                        ALUCtrl = `ALU_OPCODE_LSL;
+                    end
+
+                    3'b101: begin 
+                        case(funct7) 
+                            7'h00: begin
+                                ALUCtrl = `ALU_OPCODE_LSR;
+                            end
+
+                            7'h20: begin
+                                ALUCtrl = `ALU_OPCODE_ASR;
+                            end
+                            default: $display("LSR and ASR IMM faulty");
+                        endcase
+                        
+                    end
+
+                    3'b010: begin 
+                        ALUCtrl = `ALU_OPCODE_SLT;
+                    end
+
+                    3'b011: begin 
+                        ALUCtrl = `ALU_OPCODE_SLTU;
+                    end
+
+                    default: $display("I_TYPE instructions do not work");
+                endcase
             end
 
-            7'b0000011: begin            //I2_type
+            //I_TYPE Load instructions
+            `LOAD_TYPE: begin
+                RegWrite = 1;
+                IMMSrc = `SIGN_EXTEND_I;
+                ALUSrc = 1;
+                MemWrite = 0;
+                ResultSrc = 1;
+                
+                case(funct3)
+                    //lb
+                    3'b000: begin 
+                        MemCtrl = `MEM_B;
+                    end
 
+                    //lh
+                    3'b001: begin 
+                        MemCtrl = `MEM_H;
+                    end
+
+                    //lw
+                    3'b010: begin 
+                        MemCtrl = `MEM_W;
+                    end
+
+                    //lbu
+                    3'b100: begin 
+                        MemCtrl = `MEM_BU;
+                    end
+
+                    //lhu
+                    3'b101: begin 
+                        MemCtrl = `MEM_HU;
+                    end
+
+                    default: $display("Load instructions faulty");
+                endcase
             end
 
-            7'b0100011: begin            //S_type
+            //Store instructions
+            `S_TYPE: begin
+                RegWrite = 0;
+                ALUSrc = 1;
+                ALUCtrl = `ALU_OPCODE_ADD;
+                IMMSrc = `SIGN_EXTEND_S;
+                MemWrite = 1;
 
+                case(funct3)
+                    3'b000: begin
+                        MemCtrl = `MEM_B; // sb instruction
+                    end
+
+                    3'b001: begin
+                        MemCtrl = `MEM_H; // sb instruction
+                    end
+
+                    3'b010: begin
+                        MemCtrl = `MEM_W; // sw instruction
+                    end
+                    default: $display("Store instructions faulty");
+                endcase
             end
 
-            7'b1100011: begin            //B_type
+            //Yet to implement/check B_TYPE and J_TYPE
+            `B_TYPE: begin
+                RegWrite = 0;
+                ALUSrc   = 0;
+                IMMSrc = `SIGN_EXTEND_B;
 
+                case(funct3)
+                    3'b000: begin
+                        PCSrc = `PC_COND_BRANCH; // beq instruction
+                        ALUCtrl = `ALU_OPCODE_SUB;
+                    end
+                    3'b001: begin
+                        PCSrc = `PC_INV_COND_BRANCH; // bne instruction
+                        ALUCtrl = `ALU_OPCODE_SUB;
+                    end
+                    3'b100: begin
+                        PCSrc = `PC_INV_COND_BRANCH; // blt instruction
+                        ALUCtrl = `ALU_OPCODE_SLT;
+                    end
+                    3'b101: begin
+                        PCSrc = `PC_COND_BRANCH; // bge instruction
+                        ALUCtrl = `ALU_OPCODE_SLT;
+                    end
+                    3'b110: begin
+                        PCSrc = `PC_INV_COND_BRANCH; // bltu instruction
+                        ALUCtrl = `ALU_OPCODE_SLTU;
+                    end
+                    3'b111: begin
+                        PCSrc = `PC_COND_BRANCH; // bgeu instruction
+                        ALUCtrl = `ALU_OPCODE_SLTU;
+                    end
+
+                    default: $display("Warning: undefined B-type instruction");
+                endcase
             end
-
-            7'b1101111: begin            //J_type
-
-            end
-
-            7'b1100111: begin            //I3_type
-
-            end
-
-            7'b0110111: begin            //U1_type
-
-            end
-
-            7'b0010111: begin            //U2_type
-
-            end 
-
         endcase
     end
 

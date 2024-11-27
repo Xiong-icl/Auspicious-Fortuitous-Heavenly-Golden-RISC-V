@@ -1,10 +1,13 @@
-module instrmem (
+module instrmem #(
+    parameter   ADDRESS_WIDTH = 32,
+                DATA_WIDTH = 8
+)(
     input  logic [31:0] PC,        // Program Counter input
     output logic [31:0] instr      // Instruction output
 );
 
     // Instruction memory array
-    logic [31:0] rom [0:255];  // 256 x 32-bit memory array
+    logic [ADDRESS_WIDTH-1:0] rom [0:2**DATA_WIDTH - 1];  // 256 x 32-bit memory array
                                // Size can be adjusted based on needs
 
     // Read-only behavior
