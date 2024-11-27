@@ -6,7 +6,7 @@ module top #(
     output  logic [DATA_WIDTH-1:0] a0
 );
     logic [31:0] ImmOp; // Immediate operand for branch branch_PC
-    logic PCsrc;        // Choice between branch and incremented PC
+    logic PCSrc;        // Choice between branch and incremented PC
     logic [31:0] PC;    // Current PC value
     
 
@@ -31,10 +31,11 @@ module top #(
     logic [DATA_WIDTH-1:0]  out;
 
     //Control Unit logic
-    logic [31:0] instr;
-    logic [6:0] opcode;
-    logic [2:0] funct3;
-    logic [6:0] funct7;
+    logic [31:0]    instr;
+    logic [6:0]     opcode;
+    logic [2:0]     funct3;
+    logic [6:0]     funct7;
+    logic [2:0]     IMMSrc;
 
     // Extract instruction fields
     assign opcode = instr[6:0];
@@ -80,33 +81,33 @@ module top #(
         .clk(clk),
         .rst(rst),
         .ImmOp(ImmOp), // Immediate operand for branch branch_PC
-        .PCsrc(PCsrc),        // Choice between branch and incremented PC
+        .PCSrc(PCSrc),        // Choice between branch and incremented PC
         .PC(PC)    // Current PC value
     );
 
-//Needs modification, not linked with ALU yet
-/*
+
     // Instruction Memory instantiation
     instrmem instruction_memory (
-        .pc(pc),
+        .pc(PC),
         .instruction(instr)
     );
 
+    //Has not implemented Data Memory module
     // Control Unit instantiation
     control control_unit (
-        .opcode(opcode),
+        .instruction(instr),
         .RegWrite(RegWrite),
-        .ALUctrl(ALUctrl),
-        .ALUsrc(ALUsrc),
-        .IMMsrc(IMMsrc),
-        .PCsrc(PCsrc)
+        .ALUCtrl(alu_ctrl),
+        .ALUSrc(alu_src),
+        .IMMSrc(IMMSrc),
+        .PCSrc(PCSrc)
     );
 
     // Sign Extend instantiation
     signextend sign_extend (
         .instruction(instr),
-        .IMMsrc(IMMsrc),
+        .IMMSrc(IMMSrc),
         .ImmOp(ImmOp)
     );
-*/
+
 endmodule

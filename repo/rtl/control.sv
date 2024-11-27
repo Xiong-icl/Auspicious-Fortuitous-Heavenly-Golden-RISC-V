@@ -5,10 +5,10 @@ module control (
     input   logic [31:0] instruction,
     output  logic        RegWrite,  // Register file write enable
     output  logic        ALUSrc,    // ALU source selector
-    output  logic [2:0]  ALUCtrl,   // ALU operation control
-    output  logic [1:0]  IMMSrc,    // Immediate source selector
+    output  logic [3:0]  ALUCtrl,   // ALU operation control
+    output  logic [2:0]  IMMSrc,    // Immediate source selector
     output  logic [2:0]  MemCtrl,   // Memory operation control
-    output  logic        PCSrc,     // PC source selector (for branches)
+    output  logic [2:0]  PCSrc,     // PC source selector (for branches)
     output  logic        MemWrite,  // Memory write enable
     output  logic [1:0]  ResultSrc  // Result source selector
 );
@@ -30,7 +30,7 @@ module control (
         ALUSrc = 0;
         ALUCtrl = 0;
         IMMSrc = 0;
-        AddrMode = 0;
+        MemCtrl = 0;
         PCSrc = `PC_NEXT;
         MemWrite = 0;
         ResultSrc = 0;
@@ -140,6 +140,7 @@ module control (
                             7'h20: begin
                                 ALUCtrl = `ALU_OPCODE_ASR;
                             end
+                            default: $display("LSR and ASR IMM faulty");
                         endcase
                         
                     end
@@ -253,7 +254,6 @@ module control (
                     default: $display("Warning: undefined B-type instruction");
                 endcase
             end
-
         endcase
     end
 

@@ -74,7 +74,8 @@ TEST_F(ControlTestbench, ResultsrcTest)
 
     EXPECT_EQ(top->Resultsrc, 1);
 }
-
+//Branch yet to be created
+/*
 TEST_F(ControlTestbench, BranchTest)
 {
     //BEQ Test
@@ -83,7 +84,7 @@ TEST_F(ControlTestbench, BranchTest)
 
     EXPECT_EQ(top->Branch, 1);
 }
-
+*/
 int main(int argc, char **argv)
 {
     top = new Vdut;

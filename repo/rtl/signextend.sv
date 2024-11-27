@@ -1,10 +1,10 @@
 module signextend (
     input  logic [31:0] instr,     // Full instruction
-    input  logic [2:0]  IMMsrc,    // Immediate format selector
+    input  logic [2:0]  IMMSrc,    // Immediate format selector
     output logic [31:0] ImmOp      // Sign-extended immediate output
 );
 
-    // IMMsrc encoding
+    // IMMSrc encoding
     typedef enum logic [2:0] {
         I_TYPE = 3'b000,  // I-type instructions
         S_TYPE = 3'b001,  // Store instructions
@@ -14,7 +14,7 @@ module signextend (
     } imm_type_t;
 
     always_comb begin
-        case(IMMsrc)
+        case(IMMSrc)
             // I-type: Load, ALU immediate
             I_TYPE: begin
                 ImmOp = {{20{instr[31]}}, instr[31:20]};
@@ -50,9 +50,9 @@ module signextend (
     //Why is this necessary?
     // Assertions for verification
     // synthesis translate_off
-    always @(instr, IMMsrc) begin
-        assert (IMMsrc <= 3'b100) else
-            $error("Invalid IMMsrc value: %b", IMMsrc);
+    always @(instr, IMMSrc) begin
+        assert (IMMSrc <= 3'b100) else
+            $error("Invalid IMMSrc value: %b", IMMSrc);
     end
     // synthesis translate_on
 
