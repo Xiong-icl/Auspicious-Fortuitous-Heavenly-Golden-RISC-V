@@ -16,7 +16,7 @@ module top_pc (
     assign branch_PC = PC + ImmOp; // Branch increment
 
 
-    mux #(.DATA_WIDTH(32)) mux (
+    mux #(.DATA_WIDTH(32)) pc_mux (
         .in0(inc_PC),       // Incremented PC
         .in1(branch_PC),    // Branch PC
         .sel(PCSrc),        // Select signal
