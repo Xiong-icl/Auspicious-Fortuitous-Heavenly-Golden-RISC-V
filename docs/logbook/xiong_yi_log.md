@@ -12,3 +12,6 @@ Verilator command to allow SystemVerilog files to compile
 
 ## 26th Nov
 Fixed R, I and S instructions for control unit.
+
+## 27th Nov
+Team meeting, distributing workload to finish single-cycle CPU and prepare pipelining. Committed control_tb, ALUControl not yet fixed.

@@ -8,6 +8,7 @@
 `define J_TYPE              1101111
 `define IJ_TYPE             1100111
 `define U_TYPE              0110111
+`define AUI_TYPE            0010111
 `define LOAD_TYPE           0000011
 
 //Defining ALU code
@@ -29,7 +30,6 @@
 `define SIGN_EXTEND_B       3'b010
 `define SIGN_EXTEND_U       3'b011
 `define SIGN_EXTEND_J       3'b100
-`define SIGN_EXTEND_I5      3'b101
 
 //Defining Program Counter code
 `define PC_NEXT             3'b000

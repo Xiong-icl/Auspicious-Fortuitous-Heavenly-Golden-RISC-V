@@ -142,7 +142,6 @@ module control (
                             end
                             default: $display("LSR and ASR IMM faulty");
                         endcase
-                        
                     end
 
                     3'b010: begin 
@@ -219,7 +218,7 @@ module control (
                 endcase
             end
 
-            //Yet to implement/check B_TYPE and J_TYPE
+            //Yet to check B_TYPE and J_TYPE
             `B_TYPE: begin
                 RegWrite = 0;
                 ALUSrc   = 0;
@@ -227,34 +226,60 @@ module control (
 
                 case(funct3)
                     3'b000: begin
-                        PCSrc = `PC_COND_BRANCH; // beq instruction
-                        ALUCtrl = `ALU_OPCODE_SUB;
+                        PCSrc = `PC_COND_BRANCH;        // beq instruction
+                        ALUCtrl = `ALU_OPCODE_SUB;      //Using SUB to find whether is EQ
                     end
                     3'b001: begin
-                        PCSrc = `PC_INV_COND_BRANCH; // bne instruction
-                        ALUCtrl = `ALU_OPCODE_SUB;
+                        PCSrc = `PC_INV_COND_BRANCH;    // bne instruction
+                        ALUCtrl = `ALU_OPCODE_SUB;      //Using SUB to find whether is EQ and inverting the condition for HIGH
                     end
                     3'b100: begin
-                        PCSrc = `PC_INV_COND_BRANCH; // blt instruction
-                        ALUCtrl = `ALU_OPCODE_SLT;
+                        PCSrc = `PC_INV_COND_BRANCH;    // blt instruction
+                        ALUCtrl = `ALU_OPCODE_SLT;      //Using SLT and inverting the condition for HIGH
                     end
                     3'b101: begin
-                        PCSrc = `PC_COND_BRANCH; // bge instruction
-                        ALUCtrl = `ALU_OPCODE_SLT;
+                        PCSrc = `PC_COND_BRANCH;        // bge instruction
+                        ALUCtrl = `ALU_OPCODE_SLT;      //Using SLT
                     end
                     3'b110: begin
-                        PCSrc = `PC_INV_COND_BRANCH; // bltu instruction
-                        ALUCtrl = `ALU_OPCODE_SLTU;
+                        PCSrc = `PC_INV_COND_BRANCH;    // bltu instruction
+                        ALUCtrl = `ALU_OPCODE_SLTU;     //Using SLT with Unsigned and inverting the condition for HIGH
                     end
                     3'b111: begin
-                        PCSrc = `PC_COND_BRANCH; // bgeu instruction
-                        ALUCtrl = `ALU_OPCODE_SLTU;
+                        PCSrc = `PC_COND_BRANCH;        // bgeu instruction
+                        ALUCtrl = `ALU_OPCODE_SLTU;     //Using SLT with Unsigned
                     end
 
                     default: $display("Warning: undefined B-type instruction");
                 endcase
             end
+
+            //What does ResultSrc do here?
+            `J_TYPE: begin
+                RegWrite = 1;
+                ALUSrc   = 1;
+                IMMSrc = `SIGN_EXTEND_J;
+                PCsrc = `PC_ALWAYS_BRANCH;
+            end
+
+            `IJ_TYPE: begin 
+                RegWrite = 1;
+                ALUSrc   = 1;
+                IMMSrc = `SIGN_EXTEND_I;
+                PCsrc = `PC_ALWAYS_BRANCH;
+            end
+
+            `U_TYPE: begin 
+                RegWrite = 1;
+                ALUSrc   = 1;
+                IMMSrc = `SIGN_EXTEND_U;
+                ALUCtrl = `ALU_OPCODE_B;
+            end
+
+            `AUI_TYPE: begin 
+                RegWrite = 1;
+                ALUSrc   = 1;
+            end
         endcase
     end
-
 endmodule
