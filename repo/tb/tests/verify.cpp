@@ -1,67 +1,55 @@
-#include "testbench.h"
 #include <cstdlib>
+#include <utility>
 
-Vdut *top;
-VerilatedVcdC *tfp;
-unsigned int ticks = 0;
+#include "cpu_testbench.h"
 
-class CpuTestbench : public Testbench
+#define CYCLES 10000
+
+TEST_F(CpuTestbench, TestAddiBne)
 {
-protected:
-    void initializeInputs() override
-    {
-        top->clk = 1;
-        top->rst = 0;
-    }
-};
-
-TEST_F(CpuTestbench, BaseProgramTest)
-{
-    bool success = false;
-    system("./compile.sh asm/program.S");
-
-    for (int i = 0; i < 1000; i++)
-    {
-        runSimulation(1);
-        if (top->a0 == 254)
-        {
-            SUCCEED();
-            success = true;
-            break;
-        }
-    }
-    if (!success)
-    {
-        FAIL() << "Counter did not reach 254";
-    }
+    setupTest("1_addi_bne");
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 254);
 }
 
-// Note this is how we are going to test your CPU. Do not worry about this for
-// now, as it requires a lot more instructions to function
-TEST_F(CpuTestbench, Return5Test)
+TEST_F(CpuTestbench, TestLiAdd)
 {
-    system("./compile.sh c/return_5.c");
-    runSimulation(100);
-    EXPECT_EQ(top->a0, 5);
+    setupTest("2_li_add");
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 1000);
+}
+
+TEST_F(CpuTestbench, TestLbuSb)
+{
+    setupTest("3_lbu_sb");
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 300);
+}
+
+TEST_F(CpuTestbench, TestJalRet)
+{
+    setupTest("4_jal_ret");
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 53);
+}
+
+TEST_F(CpuTestbench, TestPdf)
+{
+    setupTest("5_pdf");
+    setData("reference/gaussian.mem");
+    initSimulation();
+    runSimulation(CYCLES * 100);
+    std::cout<<top_->a0<<std::endl;
+    EXPECT_EQ(top_->a0, 15363);
 }
 
 int main(int argc, char **argv)
 {
-    top = new Vdut;
-    tfp = new VerilatedVcdC;
-
-    Verilated::traceEverOn(true);
-    top->trace(tfp, 99);
-    tfp->open("waveform.vcd");
-
     testing::InitGoogleTest(&argc, argv);
     auto res = RUN_ALL_TESTS();
-
-    top->final();
-    tfp->close();
-
-    delete top;
-    delete tfp;
-
     return res;
 }
