@@ -38,7 +38,7 @@ for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
     # If verify.cpp -> we are testing the top module
-    if [ $name == "verify.cpp" || $name == "f1_lights_tb.cpp" || $name == "pdf_tb.cpp" ]; then
+    if [ $name == "verify.cpp" || $name == "f1_lights_tb.cpp" || $name == "pdf_tb_triangle.cpp" || $name == 'pdf_tb_other.cpp' ]; then
         name="top"
     fi
 

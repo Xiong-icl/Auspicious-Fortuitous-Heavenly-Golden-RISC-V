@@ -10,7 +10,7 @@
 TEST_F(CpuTestbench, Testpdf)
 {
     setupTest("5_pdf");
-    setData("reference/noisy.mem");
+    setData("reference/triangle.mem");
     initSimulation();
     std::vector<int> data; // array storing the waveform to be later displayed on vbuddy
     bool distribution_complete = false;
@@ -20,12 +20,12 @@ TEST_F(CpuTestbench, Testpdf)
                 distribution_complete = true;
         } 
         else if (distribution_complete == true && 
-                (data.empty() || top_->a0 != data.back())) {
+                (data.empty() || top_->a0 != data.back()-1)) {
             // Collect a0 values for plotting
             data.push_back(top_->a0);
         }
         // Stop simulation if data is collected
-        if (data.size() >= 1024) {
+        if (data.size() >= 256) {
             std::cout<<data.size()<<std::endl;
             break;
         }
