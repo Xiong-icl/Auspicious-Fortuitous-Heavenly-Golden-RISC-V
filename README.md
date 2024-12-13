@@ -19,7 +19,7 @@ Pipelined CPU | [v0.2.0](https://github.com/Xiong-icl/Auspicious-Fortuitous-Heav
 
 - [Xiong Yi Loh](/docs/personal%20statements/XiongYi_Statement.md)
 - [Antoni Steglinski](/docs/personal%20statements/Antoni_Steglinski_statement.md)
-- [Antoni Tokarski]()
+- [Antoni Tokarski](/docs/personal%20statements/Antoni_Tokarski_Statement.md)
 - [Soong En Wong]()
 
 ## Quick Start
