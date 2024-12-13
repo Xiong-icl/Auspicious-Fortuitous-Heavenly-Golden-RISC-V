@@ -13,3 +13,4 @@ always_ff @(posedge clk)
         PC <= next_PC; // Update
     end
 endmodule
+
