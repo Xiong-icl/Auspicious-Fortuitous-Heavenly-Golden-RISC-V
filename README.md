@@ -38,6 +38,22 @@ To run any of the tests use the commands below:
 |./doit.sh tests/pdf_tb_triangle.cpp | runs pdf triangle test (Vbuddy)|
 |  ./doit.sh tests/f1_lights_tb.cpp  |  runs f1 lights test (Vbuddy)  |
 
+
+## Testing Evidence
+Below are videos showing that our design works. The evidence was collected using cache_cpu version of our design
+### Videos
+F1 lights
+[F1 lights video]()
+
+Gaussian
+[gaussian video]()
+
+Noisy
+[noisy video]()
+
+Triangle
+[triangle video]()
+
 ## Individual Contributions
 
 |              |                               | Xiong Yi           | Antoni Steglinski|     Antoni Tokarski      |  Soong En Wong   |
