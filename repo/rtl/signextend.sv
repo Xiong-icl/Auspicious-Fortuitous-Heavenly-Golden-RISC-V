@@ -7,7 +7,6 @@ module signextend (
     output logic [31:0] ImmOp      // Sign-extended immediate output
 );
 
-
     always_comb begin
         case(IMMSrc)
             // I-type: Load, ALU immediate
