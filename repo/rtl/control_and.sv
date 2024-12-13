@@ -4,6 +4,6 @@ module control_and (
     input   logic       jump,
     output  logic       PCSrc
 );
-    assign PCSrc = ((branch & Zero) | jump);
+    assign PCSrc = ((branch & Zero) || jump);
 
 endmodule
