@@ -22,13 +22,19 @@ Pipelined CPU | [v0.2.0](https://github.com/Xiong-icl/Auspicious-Fortuitous-Heav
 - [Antoni Tokarski]()
 - [Soong En Wong]()
 
+## Quick Start
+Before running any scripts execute this 2 commands
+'''
+cd repo/tb
+'''
+
 ## Individual Contributions
 
 |              |                               | Xiong Yi           | Antoni Steglinski|     Antoni Tokarski      |  Soong En Wong   |
 | ------------ | ----------------------------- | ------------------ | ---------------- | ------------------------ | ---------------- |
 | Single Cycle | Program Counter               |                    |                  | Major                    |                  |
 |              | ALU                           |                    | Major            |                          |                  |
-|              | Register File                 |                    | Major            | Major                    |                  |
+|              | Register File                 |                    | Major            |                          |                  |
 |              | Instruction Memory            |                    |                  |                          | Major            |
 |              | Control Unit                  | Major              |                  |                          | Minor            |
 |              | Sign Extend                   |                    |                  |                          | Major            |
