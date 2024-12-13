@@ -13,7 +13,7 @@ Github commits under:AStegi05
 ***
 ## Reg File
 I made register file module for lab 4 and it did not change for implementation of a single cycle CPU. This is propably one of the simpler modules. It only needs to assign correct values to output registers RD1, RD2 and a0 based on addreses in the input. It has a synchronoys write port for register with address AD3 where the result from previous calculation is stored if WE3 is enabled. WE3 is a control signal from control unit.
-![reg_file_synchronous write](image-6.png)
+![reg_file_synchronous write](/images/image-6.png)
  There is also an asynchronous write port for register RD1 and RD2 that contain data, on which calculation will be made. Later I changed it so it writes data on a falling edge of a clock cycle and I added so that register zero is unwritable.
 
 ![register file](/images/image.png)
