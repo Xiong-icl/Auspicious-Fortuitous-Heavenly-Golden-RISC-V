@@ -2,12 +2,15 @@
 
 module control (
     //Defining opcode, funct3 and funct7 like this makes it difficult to input full 32-bit instructions.
-    input   logic [31:0] instruction,
+    /* verilator lint_off UNUSED */
+    input logic [31:0] instruction,
+    /* verilator lint_on UNUSED */
     output  logic        RegWrite,  // Register file write enable
     output  logic        ALUSrc,    // ALU source selector
     output  logic [4:0]  ALUCtrl,   // ALU operation control
     output  logic [2:0]  IMMSrc,    // Immediate source selector
     output  logic        MemWrite,  // Memory write enable
+    output  logic        MemRead,
     output  logic [1:0]  ResultSrc,  // Result source selector
     output  logic        branch,
     output  logic [2:0]  MemCtrl,
@@ -41,6 +44,7 @@ module control (
         ALUSrc = 1;
         IMMSrc = 0;
         MemWrite = 0;
+        MemRead = 0;
         ResultSrc = 0;
         branch = 0;
         jump = 0;
@@ -174,6 +178,7 @@ module control (
                 ALUSrc = 1;
                 MemWrite = 0;
                 ResultSrc = 1;
+                MemRead = 1;
                 
                 case(funct3)
                     //lb
@@ -272,7 +277,7 @@ module control (
 
             //JALR instructions
             7'b1100111: begin 
-                RegWrite = 1;
+                RegWrite = 0;
                 ALUSrc   = 1;
                 IMMSrc = `SIGN_EXTEND_IJ;
                 jump = 1;
@@ -292,7 +297,9 @@ module control (
                 RegWrite = 1;
                 ALUSrc   = 1;
             end
-            default: $display("Warning: undefined instruction");
+
+            default: ;
         endcase
+
     end
 endmodule
