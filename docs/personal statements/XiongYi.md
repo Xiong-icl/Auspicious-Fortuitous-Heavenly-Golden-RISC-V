@@ -258,6 +258,8 @@ Finite state machine
     end
 ```
 
+![Cache](/images/2waycache.png)
+
 The short explanation for this state machine is that the Idle state happens when a Hit is detected, Allocate state happens when a Miss happens and Dirty bit is 0 and Write-Back state happens when a Miss happens and Dirty bit is 1. Allocate state reads a new block from memory into cache, whereas Write-Back writes an old block into memory into cache, both of which go into Compare Tag and Idle when they hit. Compare Tag is used to compare the Valid and Tag signals and output the Hit and Dirty flags.
 
 CacheStall was initially used to stall the cache, but the finite state machine was sufficient to stall the cache instruction so that stalling was unnecessary.
