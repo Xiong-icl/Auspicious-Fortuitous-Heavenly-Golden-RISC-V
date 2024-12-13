@@ -21,7 +21,7 @@ module data_memory #(
     //Loading memory from data.hex into data_memory
     initial begin
         $display("Loading data into data memory...");
-        $readmemh("data.hex", array);
+        $readmemh("data.hex", array,65536);
     end
 
 
@@ -29,12 +29,6 @@ module data_memory #(
 
     // Asynchronous read logic based on funct3
     always_latch begin 
-        if(MemRead || we) begin 
-            ready = 1;
-        end
-        else begin 
-            ready = 0;
-        end
         if(MemRead) begin
             if(MemCtrl == 3'b000) begin 
 
