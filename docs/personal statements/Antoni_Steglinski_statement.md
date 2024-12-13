@@ -13,6 +13,7 @@ Github commits under:AStegi05
 ***
 ## Reg File
 I made register file module for lab 4 and it did not change for implementation of a single cycle CPU. This is propably one of the simpler modules. It only needs to assign correct values to output registers RD1, RD2 and a0 based on addreses in the input. It has a synchronoys write port for register with address AD3 where the result from previous calculation is stored if WE3 is enabled. WE3 is a control signal from control unit.
+
 ![reg_file_synchronous write](/images/image-6.png)
  There is also an asynchronous write port for register RD1 and RD2 that contain data, on which calculation will be made. Later I changed it so it writes data on a falling edge of a clock cycle and I added so that register zero is unwritable.
 
@@ -46,11 +47,11 @@ Then I created a testbench so that I can see the waveforms on vbuddy. Because th
 ***
 ## Results
 Gaussian:
-![gaussian](/images/<WhatsApp Image 2024-12-10 at 21.07.13 (1)-1.jpeg>)
+![gaussian](</images/WhatsApp Image 2024-12-10 at 21.07.13 (1)-1.jpeg>)
 noisy:
-![noisy](/images/<WhatsApp Image 2024-12-10 at 21.07.13-1.jpeg>)
+![noisy](</images/WhatsApp Image 2024-12-10 at 21.07.13-1.jpeg>)
 triangle:
-![triangle](/images/<WhatsApp Image 2024-12-10 at 21.07.12-1.jpeg>)
+![triangle](</images/WhatsApp Image 2024-12-10 at 21.07.12-1.jpeg>)
 
 
 ## Additional comments
