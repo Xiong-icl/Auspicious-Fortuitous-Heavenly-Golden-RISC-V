@@ -44,4 +44,3 @@
 `define MEM_W    3'b010
 `define MEM_BU   3'b011
 `define MEM_HU   3'b100
-
