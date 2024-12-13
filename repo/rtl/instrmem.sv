@@ -26,4 +26,3 @@ module instrmem #(
     end
 
 endmodule
-
