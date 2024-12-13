@@ -26,17 +26,17 @@ Pipelined CPU | [v0.2.0](https://github.com/Xiong-icl/Auspicious-Fortuitous-Heav
 
 |              |                               | Xiong Yi           | Antoni Steglinski|     Antoni Tokarski      |  Soong En Wong   |
 | ------------ | ----------------------------- | ------------------ | ---------------- | ------------------------ | ---------------- |
-| Single Cycle | Program Counter               |                    |                  |  Major                   |                  |
-|              | ALU                           |                    |  Major           |                          |                  |
-|              | Register File                 |                    |                  | Major                    |                  |
+| Single Cycle | Program Counter               |                    |                  | Major                    |                  |
+|              | ALU                           |                    | Major            |                          |                  |
+|              | Register File                 |                    | Major            | Major                    |                  |
 |              | Instruction Memory            |                    |                  |                          | Major            |
 |              | Control Unit                  | Major              |                  |                          | Minor            |
 |              | Sign Extend                   |                    |                  |                          | Major            |
-|              | Testbench                     | Major              |                  |                          |                  |
+|              | Testbench                     | Major              | Minor            |                          |                  |
 |              | Data Memory                   |                    |                  | Major                    |                  |
-|              | Top                           | Major              | Minor            |       Minor              |        Minor     |
-| Pipeline     | Pipeline           Stages     | Minor              | Major            |   Minor                  |  Minor           |
-|              | Hazard Unit                   | Major              |                  |                          |                  |
+|              | Top                           | Major              | Minor            | Minor                    |        Minor     |
+| Pipeline     | Pipeline           Stages     | Minor              | Major            | Minor                    |  Minor           |
+|              | Hazard Unit                   | Major              | Minor            |                          |                  |
 |              | Top     (Revised)             | Major              |                  |                          |                  |
 | Cache        | Data Memory (Revised)         | Minor              |                  |  Minor                   |                  |
 |              | Finite State Machine          | Major              |                  | Minor                    |                  |
