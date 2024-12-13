@@ -28,6 +28,8 @@ Before running any scripts execute this 2 commands
 cd repo/tb
 ```
 ### Using testbenches
+To run any of the tests use the commands below:
+
 |              Command               |             Test               |
 |------------------------------------|--------------------------------|
 |    ./doit.sh tests/verify.cpp      |       runs verify.cpp test     |
