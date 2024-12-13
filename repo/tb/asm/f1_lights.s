@@ -1,6 +1,8 @@
 
 start:
     li 		a0, 0x0
+    addi    a0, zero, 0x0
+    addi    a0, zero, 0x0
     jal 	ra, subroutine
     li      a0, 0x0
     j       start
