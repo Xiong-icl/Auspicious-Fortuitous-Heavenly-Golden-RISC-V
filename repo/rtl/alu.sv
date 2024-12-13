@@ -17,8 +17,8 @@ assign signed_op2 = ALUop2;
 
 always_comb begin
     SUM = 0;
-    EQ = 0;
-
+    EQ =  0;
+        
     case (ALUCtrl)
         `ALU_ADD:    SUM = ALUop1 + ALUop2;                     // ADD
         `ALU_SUB:    SUM = ALUop1 - ALUop2;                     // SUB
