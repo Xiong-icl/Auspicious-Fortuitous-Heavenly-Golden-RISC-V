@@ -27,7 +27,14 @@ Before running any scripts execute this 2 commands
 ```
 cd repo/tb
 ```
-
+### Using testbenches
+|              Command               |             Test               |
+|------------------------------------|--------------------------------|
+|    ./doit.sh tests/verify.cpp      |       runs verify.cpp test     |
+|./doit.sh tests/pdf_tb_gaussian.cpp | runs pdf gaussian test (Vbuddy)|
+|  ./doit.sh tests/pdf_tb_noisy.cpp  |  runs pdf noisy test (Vbuddy)  |
+|./doit.sh tests/pdf_tb_triangle.cpp | runs pdf triangle test (Vbuddy)|
+|  ./doit.sh tests/f1_lights_tb.cpp  |  runs f1 lights test (Vbuddy)  |
 
 ## Individual Contributions
 
