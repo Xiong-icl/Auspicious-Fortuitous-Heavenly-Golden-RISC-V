@@ -41,11 +41,11 @@ cd repo/tb
 |              | Sign Extend                   |                    |                  |                          | Major            |
 |              | Testbench                     | Major              | Minor            |                          |                  |
 |              | Data Memory                   |                    |                  | Major                    |                  |
-|              | Top                           | Major              | Minor            | Minor                    |        Minor     |
-| Pipeline     | Pipeline           Stages     | Minor              | Major            | Minor                    |  Minor           |
+|              | Top                           | Major              | Minor            | Minor                    | Minor            |
+| Pipeline     | Pipeline           Stages     | Minor              | Major            | Minor                    | Minor            |
 |              | Hazard Unit                   | Major              | Minor            |                          |                  |
-|              | Top     (Revised)             | Major              |                  |                          |                  |
-| Cache        | Data Memory (Revised)         | Minor              |                  |  Minor                   |                  |
+|              | Top     (Revised)             | Major              |                  | Minor                    |                  |
+| Cache        | Data Memory (Revised)         | Minor              |                  | Minor                    |                  |
 |              | Finite State Machine          | Major              |                  | Minor                    |                  |
 |              | Two-way Set Associative Cache | Major              |                  | Major                    | Minor            |
 | PDF          | PDF                           |                    |  Major           | Minor                    |                  |
