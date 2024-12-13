@@ -9,7 +9,7 @@ module alu #(
     output  logic   [DATA_WIDTH -1:0]   SUM, //outputs the output
     output  logic                       EQ //gives signals to pc counter to branch or not to branch
 );
-    
+ 
 logic signed [DATA_WIDTH -1:0] signed_op1;
 logic signed [DATA_WIDTH -1:0] signed_op2;
 assign signed_op1 = ALUop1;
