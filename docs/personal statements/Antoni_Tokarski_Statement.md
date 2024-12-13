@@ -11,14 +11,15 @@ Most of my commits are under 'root' as they were made through the terminal and I
 
 Most of my work involved writing system verilog modules, I also became involved with the debuging of the cpu towards the end of the project.
 
--[Program Counter](#program-counter)
--[Data Memory](#data-memory)
--[Pipelining](#pipelining)
--[Finite State Machine](#two-way-set-associative-cache--fsm)
--[Two-way Set Associative Cache](#two-way-set-associative-cache--fsm)
--[PDF & F1 Lights Debugging](#debugging)
--[Additional Comments](#misc)
-***
+## Contributions
+
+- [Program Counter](#program-counter)
+- [Data Memory](#data-memory)
+- [Pipelining](#pipelining)
+- [Finite State Machine](#two-way-set-associative-cache--fsm)
+- [Two-way Set Associative Cache](#two-way-set-associative-cache--fsm)
+- [PDF & F1 Lights Debugging](#debugging)
+- [Additional Comments](#misc)
 
 ## Program Counter
 
@@ -78,16 +79,15 @@ I wrote the data memory module once we began working on the real cpu after lab 4
                 rd_temp = 32'b0; // Default to zero if funct3 is invalid
         endcase
     end
-
+'''
+'''
     assign rd = rd_temp;
-
     // Synchronous write
     always_ff @(posedge clk) begin
         if (we) begin
             case (funct3)
                 3'b000: // Byte access
                     array[addr] <= wd[7:0]; // Lowest byte
-                
                 3'b001: // Half-word access
                 begin
                     array[addr]     <= wd[7:0];   // Lower byte
@@ -260,7 +260,6 @@ module data_mem_cache #(
                     memory_ready <= 0;  // Awaiting data validity
                 end
             end
-            
         end else if (read_en && !fetch_in_progress && !write_back_in_progress) begin
             if (!hit) begin
                 // Miss: Select invalid way or use LRU
