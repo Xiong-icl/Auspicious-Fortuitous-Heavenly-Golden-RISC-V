@@ -9,6 +9,7 @@ module pipeline_e_m #(
     input logic         RegWriteE,
     input logic [1:0]   ResultSrcE,
     input logic         MemWriteE,
+    input logic         MemReadE,
     input logic [2:0]   MemCtrlE,
     input logic         JALROnD,
     output logic [DATA_WIDTH -1:0]  ALUResultM,
@@ -19,6 +20,7 @@ module pipeline_e_m #(
     output logic [1:0]  ResultSrcM,
     output logic        MemWriteM,
     output logic [2:0]  MemCtrlM,
+    output logic        MemReadM,
     output logic         JALROnE
 );
 
@@ -31,6 +33,7 @@ module pipeline_e_m #(
         RegWriteM <= RegWriteE;
         ResultSrcM <= ResultSrcE;
         MemWriteM <= MemWriteE;
+        MemReadM <= MemReadE;
         MemCtrlM <= MemCtrlE;
         JALROnE <= JALROnD;
     end
