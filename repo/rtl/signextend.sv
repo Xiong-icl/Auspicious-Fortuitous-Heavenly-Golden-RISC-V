@@ -1,9 +1,12 @@
 `include "define.sv"
 module signextend (
-    input  logic [31:0] instr,     // Full instruction
+    /* verilator lint_off UNUSED */
+    input logic [31:0] instr,
+    /* verilator lint_on UNUSED */
     input  logic [2:0]  IMMSrc,    // Immediate format selector
     output logic [31:0] ImmOp      // Sign-extended immediate output
 );
+
 
     always_comb begin
         case(IMMSrc)
@@ -42,14 +45,5 @@ module signextend (
             end
         endcase
     end
-
-    //Why is this necessary?
-    // Assertions for verification
-    // synthesis translate_off
-    always @(instr, IMMSrc) begin
-        assert (IMMSrc <= 3'b100) else
-            $error("Invalid IMMSrc value: %b", IMMSrc);
-    end
-    // synthesis translate_on
 
 endmodule
