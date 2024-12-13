@@ -26,7 +26,7 @@ Most of my work involved writing system verilog modules, I also became involved 
 I created the program counter module, it was then systematically updated as the coursework continued. The only major design choice was changing it so that it it utilised the mux module instead of its own internal logic and later splitting it up into sub-modules, which would later be combined into top_pc.
 
 ### Original implementation of the PC which was later abstracted to top_pc 
-'''
+```
 module program_counter (
     input logic clk,          // Clock signal
     input logic rst,          // Reset signal 
@@ -52,7 +52,7 @@ always_ff @(posedge clk or posedge rst)
 
 
 endmodule
-'''
+```
 
 
 ## Data Memory
@@ -60,7 +60,7 @@ endmodule
 I wrote the data memory module once we began working on the real cpu after lab 4. Over the course of the project it went through several improvements. It began with only word access but this was later expanded to all 5 access types availible. At a certain point there was also internal stall logic introduced to help with the cache but this was later scrapped as it turned out to be unnessecary due to the nature of system verilog.
 
 ### data memory before cache
-'''
+```
     logic [DATA_WIDTH-1:0] rd_temp;
     // Asynchronous read logic based on funct3
     always_comb begin
@@ -79,8 +79,7 @@ I wrote the data memory module once we began working on the real cpu after lab 4
                 rd_temp = 32'b0; // Default to zero if funct3 is invalid
         endcase
     end
-'''
-'''
+
     assign rd = rd_temp;
     // Synchronous write
     always_ff @(posedge clk) begin
@@ -103,10 +102,10 @@ I wrote the data memory module once we began working on the real cpu after lab 4
                 default: // Default to no operation or log an error
                     $display("Unsupported access type: funct3 = %b", funct3);
             endcase
-'''
+```
 
 ### The unused latency logic
-'''
+```
     // Simulated latency logic
      logic [1:0] latency_counter; // Latency counter to simulate delay
     // Initialize latency counter and ready signal
@@ -139,7 +138,7 @@ I wrote the data memory module once we began working on the real cpu after lab 4
              ready <= 1; // Default to ready if no operation is in progress
          end
      end
-'''
+```
 
 
 ## Pipelining
@@ -161,7 +160,7 @@ The initial structure of the cache was done by Soong En Wong however it was my j
 
 <summary>Original Cache Implementation</summary>
 
-'''
+```
 module data_mem_cache #(
         parameter ADDR_WIDTH = 32,
         parameter DATA_WIDTH = 32
@@ -317,7 +316,7 @@ module data_mem_cache #(
         .ready(memory_ready)
     );
 endmodule
-'''
+```
 
 </details>
 
