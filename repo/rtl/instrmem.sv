@@ -1,31 +1,28 @@
-module instrmem (
-    input  logic [31:0] PC,        // Program Counter input
-    output logic [31:0] instr      // Instruction output
+module instrmem #(
+    parameter ADDRESS_WIDTH = 32,
+              DATA_WIDTH = 8,
+              INSTR_WIDTH = 32
+) (
+    input  logic [ADDRESS_WIDTH-1:0] A, // address input
+    output logic [INSTR_WIDTH-1:0] RD   // instruction output
 );
 
-    // Instruction memory array
-    logic [31:0] rom [0:255];  // 256 x 32-bit memory array
-                               // Size can be adjusted based on needs
+    logic [DATA_WIDTH-1:0] array [0:2**12-1]; // memory array
 
-    // Read-only behavior
-    assign instr = rom[PC[9:2]]; // Word-aligned addressing (PC/4)
-    
-    // Initialize memory with program
     initial begin
-        // Clear all memory locations first
-        for (int i = 0; i < 256; i++) begin
-            rom[i] = 32'h0;
-        end
-
-        // You can also load instructions from a file:
-        // $readmemh("program.hex", rom);
+        $display("Loading data into data memory...");
+        $readmemh("../rtl/program.hex", array);
     end
+    
+    assign RD = {array[A + 3], array[A + 2], array[A + 1], array[A]};
 
-
-    always @(PC) begin
-        assert (PC[1:0] == 2'b00) else
+    initial begin
+        $display("RD is", RD);
+    end
+    
+    always @(A) begin
+        assert (A[1:0] == 2'b00) else
             $error("Instruction fetch from non-word-aligned address");
     end
-    // synthesis translate_on
 
 endmodule
