@@ -7,3 +7,4 @@ module control_and (
     assign PCSrc = ((branch & Zero) || jump);
 
 endmodule
+
