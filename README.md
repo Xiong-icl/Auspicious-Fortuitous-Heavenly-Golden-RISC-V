@@ -44,7 +44,7 @@ Below are videos showing that our design works. The evidence was collected using
 ### Videos
 F1 lights
 <video width="320" height="240" controls>
-  <source src="videos/WhatsApp Video 2024-12-13 at 02.40.11.mov" type="video/mp4">
+  <source src="videos/WhatsApp Video 2024-12-13 at 02.40.11.mov" type="video/mov">
 </video>
 
 Gaussian
