@@ -43,16 +43,20 @@ To run any of the tests use the commands below:
 Below are videos showing that our design works. The evidence was collected using cache_cpu version of our design
 ### Videos
 F1 lights
-[![Tytuł filmu](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](<videos/WhatsApp Video 2024-12-13 at 02.40.11.mov>)
+
+https://github.com/user-attachments/assets/925dada4-d159-425a-954b-564b3d8ddef0
 
 Gaussian
-[gaussian video]()
+
+https://github.com/user-attachments/assets/c6309fac-9396-4c7e-b4c5-a0afffdc5b67
 
 Noisy
-[noisy video]()
+
+https://github.com/user-attachments/assets/6bf1486e-5f67-4ae3-bd7b-7a93b57ba94e
 
 Triangle
-[triangle video]()
+
+https://github.com/user-attachments/assets/919cb9c8-1968-4a57-85c9-3f60b9cc24bb
 
 ## Individual Contributions
 
