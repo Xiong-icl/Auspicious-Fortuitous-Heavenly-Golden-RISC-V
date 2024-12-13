@@ -43,7 +43,7 @@ To run any of the tests use the commands below:
 Below are videos showing that our design works. The evidence was collected using cache_cpu version of our design
 ### Videos
 F1 lights
-[F1 lights video](videos/WhatsApp Video 2024-12-13 at 02.40.11.mp4)
+[F1 lights video](<videos/WhatsApp Video 2024-12-13 at 02.40.11.mp4>)
 
 Gaussian
 [gaussian video]()
