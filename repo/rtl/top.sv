@@ -38,6 +38,7 @@ module top #(
     //Data Memory logic
     logic [31:0]    rd;
 
+
     //Top PC logic 
     logic [DATA_WIDTH-1:0]    ImmOp; 
     logic [DATA_WIDTH-1:0]    PC;
@@ -54,7 +55,7 @@ module top #(
     assign Rs2D = InstrD[24:20];
     assign RdD  = InstrD[11:7];
 
-    logic[2:0] MemCtrlM;
+
 
     //F-D Pipeline
     logic [31:0] PCPlus4F;
@@ -88,6 +89,7 @@ module top #(
     logic                       RegWriteM;
     logic   [1:0]               ResultSrcM;
     logic                       MemWriteM;
+    logic                       MemReadM;
     logic   [DATA_WIDTH-1:0]    ALUResultM;
     logic   [DATA_WIDTH-1:0]    WriteDataM;
     logic   [4:0]               RdM;
@@ -96,6 +98,7 @@ module top #(
     logic   [DATA_WIDTH-1:0]    SrcBE;
     logic   [DATA_WIDTH-1:0]    PCTargetE;
     logic                       MemReadE;
+    logic   [2:0]               MemCtrlM;
 
     //M-W Pipeline
     logic                       RegWriteW;
@@ -265,6 +268,7 @@ module top #(
         .WriteDataE(WriteDataE),//
         .RdE(RdE),//
         .PCPlus4E(PCPlus4E),//
+        .MemReadE(MemReadE),
         .MemCtrlE(MemCtrlE),
         .JALROnD(JALROn),
 
@@ -274,6 +278,7 @@ module top #(
         .ALUResultM(ALUResultM),//
         .WriteDataM(WriteDataM),//
         .RdM(RdM),//
+        .MemReadM(MemReadM),
         .MemCtrlM(MemCtrlM),
         .JALROnE(JALROnE),
         .PCPlus4M(PCPlus4M)//
@@ -332,14 +337,24 @@ module top #(
         .ResultSrcW(ResultSrcW)//
     );
 
-    data_memory new_data_memory (
-        .clk (clk),
-        .MemCtrl (MemCtrlM),
-        .addr (ALUResultM),
-        .we (MemWriteM),
-        .wd (WriteDataM),
-        .rd (rd)
+    cache_with_FSM new_cache_with_FSM(
+        .clk(clk),
+        .we(MemWriteM),
+        .MemRead(MemReadM),
+        .MemCtrl(MemCtrlM),
+        .addr(ALUResultM),
+        .wd(WriteDataM),
+        .out(rd)
     );
+
+    // data_memory new_data_memory (
+    //     .clk (clk),
+    //     .addr (ALUResultM),
+    //     .we (MemWriteM),
+    //     .MemCtrl (MemCtrlM), //PIPELINE THIS SHIT
+    //     .wd (WriteDataM),
+    //     .rd (rd)
+    // );
 
     //This is implemented in top_pc
     // branch_add branch_adder (
@@ -376,6 +391,55 @@ module top #(
         .stall(stall),
         .flush(flush)
     );
+
+//     always_ff @(posedge clk) begin
+//     $display("----------------------------------------------------");
+
+//     // // Debug Fetch Stage
+//     $display("Fetch Stage:");
+//     $display("Instruction (instr): %h, Opcode: %b", instr, instr[6:0]); 
+//     $display("PC (PC): %h, PCPlus4F: %h ", PC, PCPlus4F);
+
+//     // // Debug Decode Stage
+//     $display("Decode Stage:");
+//     // $display("Sign Extend opcode: %b, ImmOp: %h", IMMSrc, ImmOp);
+//     $display("RegWrite: %b, RD1: %h, RD2: %h, ImmOp: %h", RegWrite, RD1, RD2, ImmOp);
+//     // $display("Instruction Decode: rd: %0d, rs1: %0d, rs2: %0d", RdD, Rs1D, Rs2D);
+//     // $display("ResultSrc: %b", ResultSrc);
+
+//     // // Debug Execute Stage
+//     $display("Execute Stage:");
+//     $display("Branch: %b, Jump: %b, ZeroE: %b", BranchE, JumpE, ZeroE);
+//     $display("ALU Control (ALUControlE): %b, ALUSrcE: %b", ALUControlE, ALUSrcE);
+//     $display("SrcAE: %h, SrcBE: %h, SUM (ALUResult): %h", SrcAE, SrcBE, SUM);
+//     $display("RD1E: %h, RD2E: %h, ImmExtE: %h", RD1E, RD2E, ImmExtE);
+//     $display("PCTargetE: %d, PCSrc: %b, PC_Rs1_Add: %d, JALROn: %b", PCTargetE, PCSrc, PC_Rs1_Add, JALROnE);
+
+//     // // Debug Memory Stage
+//     $display("Memory Stage:");
+//     $display("ALUResultM: %h, WriteDataM: %h, ReadMem Output (rd): %h", ALUResultM, WriteDataM, rd);
+//     $display("ResultSrcM: %b, MemCtrlM: %b , MemWriteM:%b " , ResultSrcM, MemCtrlM, MemWriteM);
+//     // if (MemWriteM) begin
+//     //     $display("Memory Write Enabled: Writing to Memory at Addr: %h, Data: %h", ALUResultM, WriteDataM);
+//     // end
+
+//     // Debug Writeback Stage
+//     $display("Writeback Stage:");
+//     $display("ALUResultW: %h, ReadDataW: %h, PCPlus4W: %h", ALUResultW, ReadDataW, PCPlus4W);
+//     $display("ResultSrcW: %b (0: ALUResultW, 1: ReadDataW, 2: PCPlus4W)", ResultSrcW);
+//     $display("RegWriteW: %b", RegWriteW);
+//     if (RegWriteW) begin
+//         $display("Register Write Enabled: Writing to Register RdW: %0d, Data: %h", RdW, ResultW);
+//     end
+
+//     // // // Debug Hazard Unit
+//     $display("Hazard Unit:");
+//     $display("Stall: %b, Flush: %b", stall, flush);
+//     $display("ForwardAE: %b, ForwardBE: %b", ForwardAE, ForwardBE);
+
+//     $display("----------------------------------------------------");
+// end
+
   
 
 endmodule
