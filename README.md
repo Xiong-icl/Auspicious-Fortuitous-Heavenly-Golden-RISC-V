@@ -24,9 +24,9 @@ Pipelined CPU | [v0.2.0](https://github.com/Xiong-icl/Auspicious-Fortuitous-Heav
 
 ## Quick Start
 Before running any scripts execute this 2 commands
-'''
+```
 cd repo/tb
-'''
+```
 
 ## Individual Contributions
 
