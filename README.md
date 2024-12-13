@@ -44,19 +44,19 @@ Below are videos showing that our design works. The evidence was collected using
 ### Videos
 F1 lights
 
-https://github.com/user-attachments/assets/925dada4-d159-425a-954b-564b3d8ddef0
+https://github.com/user-attachments/assets/8e465bfb-acce-416a-9a26-3a5d7274e0e5
 
 Gaussian
 
-https://github.com/user-attachments/assets/c6309fac-9396-4c7e-b4c5-a0afffdc5b67
+https://github.com/user-attachments/assets/bb660c1a-810c-415c-aaaa-705ce549b9dd
 
 Noisy
 
-https://github.com/user-attachments/assets/6bf1486e-5f67-4ae3-bd7b-7a93b57ba94e
+https://github.com/user-attachments/assets/35122815-d5df-4ccb-88c0-43587351abbc
 
 Triangle
 
-https://github.com/user-attachments/assets/919cb9c8-1968-4a57-85c9-3f60b9cc24bb
+https://github.com/user-attachments/assets/ffe2538a-ec86-4bed-8f2e-0bf7bd26db68
 
 ## Individual Contributions
 
