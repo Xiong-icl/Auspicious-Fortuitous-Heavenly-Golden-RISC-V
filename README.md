@@ -20,7 +20,7 @@ Pipelined CPU | [v0.2.0](https://github.com/Xiong-icl/Auspicious-Fortuitous-Heav
 - [Xiong Yi Loh](/docs/personal%20statements/XiongYi_Statement.md)
 - [Antoni Steglinski](/docs/personal%20statements/Antoni_Steglinski_statement.md)
 - [Antoni Tokarski](/docs/personal%20statements/Antoni_Tokarski_Statement.md)
-- [Soong En Wong]()
+- [Soong En Wong](/docs/personal%20statements/Soong_En_Wong_statement.md)
 
 ## Quick Start
 Before running any scripts execute this 2 commands
