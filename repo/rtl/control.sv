@@ -297,9 +297,7 @@ module control (
                 RegWrite = 1;
                 ALUSrc   = 1;
             end
-
             default: ;
         endcase
-
     end
 endmodule
