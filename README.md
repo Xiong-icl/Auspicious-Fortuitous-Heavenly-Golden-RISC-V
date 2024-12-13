@@ -43,9 +43,7 @@ To run any of the tests use the commands below:
 Below are videos showing that our design works. The evidence was collected using cache_cpu version of our design
 ### Videos
 F1 lights
-<video width="320" height="240" controls>
-  <source src="videos/WhatsApp Video 2024-12-13 at 02.40.11.mov" type="video/mov">
-</video>
+[![Tytuł filmu](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](videos/WhatsApp Video 2024-12-13 at 02.40.11.mov)
 
 Gaussian
 [gaussian video]()
