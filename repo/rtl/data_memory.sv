@@ -1,17 +1,19 @@
+
 module data_memory #(
     parameter DATA_WIDTH = 32,  // Width of data
     parameter ADDR_WIDTH = 32,    // Width of address
     parameter MEM_WIDTH = 8      // Width of memory
 ) (
-    input  logic                  clk,
-    input logic [2:0]             MemCtrl,        
+    input  logic                  clk,        
     input  logic [ADDR_WIDTH-1:0] addr,       // Address
     input  logic                  we,         // Write Enable
+    input   logic   [2:0]               MemCtrl,
+    input   logic                       MemRead,
     input  logic [DATA_WIDTH-1:0] wd,         // Write Data
-    output logic [DATA_WIDTH-1:0] rd          // Read Data
+    output logic [DATA_WIDTH-1:0] rd,          // Read Data
+    output  logic                 ready
+
 );
-
-
 
     // 0x00000000 - 0x0001FFFF data array == 128 KB memory & 17-bit addressing
     logic [MEM_WIDTH-1:0] array [2**17:0]; // Each word is 8 bits / 1 byte
@@ -19,37 +21,40 @@ module data_memory #(
     //Loading memory from data.hex into data_memory
     initial begin
         $display("Loading data into data memory...");
-        $readmemh("data.hex", array, 65536);
+        $readmemh("data.hex", array);
     end
 
-    // Asynchronous read: 4 consecutive 8-bit locations combine into a 32-bit word
-    always_ff @* begin 
 
-        // $display("Memory Read Addresses and Values:");
-        // $display("Address Byte 0: 00010000, Value: %h", array[18'h10000]);
-        // $display("Address Byte 1: 00010001, Value: %h", array[18'h10001]);
-        // $display("MemCtrl: %b", MemCtrl);
-        if(MemCtrl == 3'b000) begin 
 
-            rd = {{24{array[addr][7]}}, array[addr]}; 
-        end
-        if(MemCtrl == 3'b011) begin 
 
-            rd = {24'b0, array[addr[17:0]]};
+    // Asynchronous read logic based on funct3
+    always_latch begin 
+        if(MemRead || we) begin 
+            ready = 1;
         end
         else begin 
-            rd = {array[addr+3], array[addr+2], array[addr+1], array[addr]};
+            ready = 0;
+        end
+        if(MemRead) begin
+            if(MemCtrl == 3'b000) begin 
+
+                rd = {{24{array[addr][7]}}, array[addr]}; 
+            end
+            if(MemCtrl == 3'b011) begin 
+
+                rd = {24'b0, array[addr[17:0]]};
+            end
+            else begin 
+                rd = {array[addr+3], array[addr+2], array[addr+1], array[addr]};
+            end
         end
     end
 
-    // always_ff @* begin 
-    //     $display("Memory Address:");
-    //     $display("Address Byte 0: 10000, Value: %h", array [18'h10000]);
-    //     $display("Address Byte 1: 10001, Value: %h", array [18'h10001]);
-    // end
 
-    // Synchronous write: Writes a 32-bit word to a word
-    always_ff @(posedge clk)
+
+
+    // Synchronous write
+    always_ff @(posedge clk) begin
         if (we & (MemCtrl == 3'b000)) begin 
             array[addr] <= wd[7:0]; // Lowest byte
         end 
@@ -59,4 +64,6 @@ module data_memory #(
             array[addr+2] <= wd[23:16];     // Third byte
             array[addr+3] <= wd[31:24];     // Upper byte
         end
+    end
+
 endmodule
